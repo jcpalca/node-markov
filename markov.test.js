@@ -55,8 +55,19 @@ describe("getText", function () {
 
   });
 
-  ///TODO: test each bigram for presence in expected output.
+  test("expects each bigram to be valid", function () {
+    const text = `The cat is in the hat. The cat is the cat. The hat is a cat.`;
+
+    const machine = new MarkovMachine(text);
+
+    const words = machine.getText(text).split(/[ \r\n]+/);
+
+    for (let i = 0; i < words.length - 1; i++) {
+      expect(text).toContain(words[i] + ' ' + words[i + 1]);
+
+    }
 
 
+  });
 
 });
