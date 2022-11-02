@@ -1,6 +1,5 @@
 "use strict";
 
-/** Textual markov chain generator. */
 
 
 class MarkovMachine {
@@ -12,6 +11,7 @@ class MarkovMachine {
     // include things like "The", "cat", "cat.".
     this.words = text.split(/[ \r\n]+/);
     this.chains = this.getChains();
+    // console.log(this.words);
   }
 
   /** Get markov chain: returns Map of Markov chains.
@@ -44,7 +44,6 @@ class MarkovMachine {
 
     // console.log(this.words)
     // console.log(chains)
-    console.log(chains);
     return chains;
   }
 
@@ -53,15 +52,16 @@ class MarkovMachine {
    *  until it hits a null choice. */
 
   getText() {
-    let text = [this.words[0]];
-    let currWord = this.words[0];
-    // console.log(this.chains)
+    const starting_words = this.getStartingWords(this.words);
+    let currWord = this.getRandomWord(starting_words);
+    let text = [currWord];
 
     // - start at the first word in the input text
     // - find a random word from the following-words of that
     // - repeat until reaching the terminal null
     while (currWord !== null) {
       const words = this.chains.get(currWord);
+
       currWord = this.getRandomWord(words);
       if (currWord !== null) text.push(currWord);
       else break;
@@ -72,17 +72,26 @@ class MarkovMachine {
 
   /** Returns random word from array of words */
 
+  getStartingWords(words) {
+    return words.filter(word => {
+      try {
+        return word[0] === word[0].toUpperCase();
+      }
+      catch {
+        return false;
+      }
+    });
+  }
+
   getRandomWord(words) {
+    '';
     return words[Math.floor(Math.random() * words.length)];
   }
 }
 
-// const catInHatMachine = new MarkovMachine(`The cat is in the hat.
-//   The cat is the cat.
-//   The hat is a cat.`);
-
-// console.log(catInHatMachine.getText());
 
 module.exports = {
   MarkovMachine
 };
+
+
